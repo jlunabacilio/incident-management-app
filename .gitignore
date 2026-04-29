@@ -1,0 +1,65 @@
+# ─── .NET ─────────────────────────────────────────────────────────────────────
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+*.db
+*.db-shm
+*.db-wal
+
+# EF Core migrations snapshot (keep migrations, ignore generated runtime files)
+# Uncomment if you want to ignore migrations entirely:
+# **/Migrations/
+
+# Published output
+publish/
+out/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Rider / VS / VSCode
+.idea/
+*.DotSettings.user
+.vscode/
+*.code-workspace
+
+# ─── Node / Next.js ───────────────────────────────────────────────────────────
+src/frontend/node_modules/
+src/frontend/.next/
+src/frontend/out/
+src/frontend/.turbo/
+
+# Next.js build output
+src/frontend/.next/
+src/frontend/next-env.d.ts
+
+# Env files — never commit secrets
+src/frontend/.env*.local
+src/frontend/.env.production
+
+# ─── Uploads (local file storage) ────────────────────────────────────────────
+src/backend/IncidentReport.API/uploads/
+
+# ─── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+.kiro
