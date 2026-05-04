@@ -33,6 +33,12 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   const res = await fetch(`${BASE_URL}${path}`, { ...init, headers });
 
   if (!res.ok) {
+    if (res.status === 401 && typeof window !== 'undefined') {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('auth_user');
+      window.location.href = '/login';
+      throw new Error('Unauthorized');
+    }
     const body = await res.json().catch(() => ({ error: res.statusText }));
     throw new Error(body?.error ?? `HTTP ${res.status}`);
   }

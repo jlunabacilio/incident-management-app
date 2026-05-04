@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useDashboard } from '@/hooks/useIncidents';
 import { AlertTriangle, Plane, ClipboardList, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
+import { Navbar } from '@/components/ui/Navbar';
 
 function StatCard({ label, value, color }: { label: string; value: number; color: string }) {
   return (
@@ -33,17 +34,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Nav */}
-      <nav className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <span className="text-2xl">✈</span>
-          <span className="font-semibold text-gray-900">Incident Management</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="text-sm text-gray-600">{user.fullName} <span className="text-gray-400">({user.role})</span></span>
-          <Link href="/incidents" className="text-sm text-blue-600 hover:underline">Incidents</Link>
-        </div>
-      </nav>
+      <Navbar />
 
       <main className="max-w-6xl mx-auto px-6 py-8">
         <h1 className="text-2xl font-bold text-gray-900 mb-6">Fleet Dashboard</h1>

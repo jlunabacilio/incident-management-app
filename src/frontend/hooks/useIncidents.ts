@@ -36,15 +36,19 @@ export function useIncidents(initialFilters: IncidentFilters) {
 export function useDashboard() {
   const [data, setData] = useState<DashboardSummaryDto | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const fetch = useCallback(async () => {
     setLoading(true);
+    setError(null);
     try {
       setData(await getDashboard());
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Failed to load dashboard');
     } finally {
       setLoading(false);
     }
   }, []);
 
-  return { data, loading, fetch };
+  return { data, loading, error, fetch };
 }

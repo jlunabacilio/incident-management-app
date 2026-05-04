@@ -9,6 +9,7 @@ import { useIncidents } from '@/hooks/useIncidents';
 import { IncidentCard } from '@/components/incidents/IncidentCard';
 import { IncidentFiltersPanel } from '@/components/incidents/IncidentFiltersPanel';
 import { Button } from '@/components/ui/Button';
+import { Navbar } from '@/components/ui/Navbar';
 
 const DEFAULT_FILTERS = { page: 1, pageSize: 20 };
 
@@ -31,11 +32,9 @@ export default function IncidentsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Link href="/" className="text-2xl">✈</Link>
-          <span className="font-semibold text-gray-900">Incidents</span>
-        </div>
+      <Navbar />
+      <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
+        <span className="font-semibold text-gray-700">Incidents</span>
         <div className="flex items-center gap-3">
           <Button variant="ghost" onClick={() => fetch()} className="gap-2">
             <RefreshCw size={16} /> Refresh
@@ -44,7 +43,7 @@ export default function IncidentsPage() {
             <Button className="gap-2"><Plus size={16} /> New Incident</Button>
           </Link>
         </div>
-      </nav>
+      </div>
 
       <main className="max-w-7xl mx-auto px-6 py-6 space-y-4">
         <IncidentFiltersPanel

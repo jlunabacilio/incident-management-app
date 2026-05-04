@@ -15,6 +15,7 @@ import { formatDate, formatBytes } from '@/lib/utils';
 import { hasRole } from '@/lib/auth';
 import type { AuditEvent, IncidentDto, IncidentStatus } from '@/types';
 import { IncidentStateMachine } from '@/lib/stateMachine';
+import { Navbar } from '@/components/ui/Navbar';
 
 export default function IncidentDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -36,10 +37,16 @@ export default function IncidentDetailPage() {
 
   useEffect(() => {
     if (!user || !id) return;
-    Promise.all([getIncident(id), getAuditTrail(id)])
-      .then(([inc, aud]) => { setIncident(inc); setAudit(aud); })
+    setLoading(true);
+    getIncident(id)
+      .then((inc) => setIncident(inc))
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false));
+
+    // Audit trail is role-restricted — load independently and fail gracefully
+    getAuditTrail(id)
+      .then((aud) => setAudit(aud))
+      .catch(() => setAudit([]));
   }, [user, id]);
 
   async function handleTransition(newStatus: IncidentStatus) {
@@ -96,11 +103,12 @@ export default function IncidentDetailPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white border-b border-gray-200 px-6 py-4 flex items-center gap-4">
+      <Navbar />
+      <nav className="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-4">
         <Link href="/incidents" className="text-gray-500 hover:text-gray-800">
           <ArrowLeft size={20} />
         </Link>
-        <span className="font-semibold text-gray-900">{incident.incidentNumber}</span>
+        <span className="font-semibold text-gray-700">{incident.incidentNumber}</span>
         <div className="ml-auto flex items-center gap-2">
           <SeverityBadge severity={incident.severity} />
           <StatusBadge status={incident.status} />
@@ -185,7 +193,15 @@ export default function IncidentDetailPage() {
         {/* Audit trail */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h3 className="font-semibold mb-4">Audit Trail</h3>
-          <AuditTimeline events={audit} />
+          {audit.length > 0 ? (
+            <AuditTimeline events={audit} />
+          ) : (
+            <p className="text-sm text-gray-500">
+              {hasRole(user, 'MaintenanceControl', 'SafetyOfficer', 'ChiefEngineer', 'Admin')
+                ? 'No audit events recorded yet.'
+                : 'You do not have permission to view the audit trail.'}
+            </p>
+          )}
         </div>
       </main>
 
